@@ -17,15 +17,15 @@ export class MovementSystem extends System {
       const vel = entity.get<Velocity>('Velocity');
       const speed = entity.get<Speed>('Speed');
 
-      if (pos && vel && speed) {
-        const length = Math.hypot(vel.vx, vel.vy);
-        if (length === 0) continue;
+      if (!pos || !vel || !speed) continue;
 
-        const dt = deltaTime / 1000;
+      const length = Math.hypot(vel.vx, vel.vy);
+      if (length === 0) continue;
 
-        pos.x += (vel.vx / length) * dt * speed.value;
-        pos.y += (vel.vy / length) * dt * speed.value;
-      }
+      const dt = deltaTime / 1000;
+
+      pos.x += (vel.vx / length) * dt * speed.value;
+      pos.y += (vel.vy / length) * dt * speed.value;
     }
   }
 }

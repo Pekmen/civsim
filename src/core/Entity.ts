@@ -1,4 +1,4 @@
-import { generateId } from '../utils';
+import { generateId } from '../utils/helpers';
 import type { Component, ComponentName } from './Component';
 
 export type Entityid = string;

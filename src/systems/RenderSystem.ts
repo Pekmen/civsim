@@ -4,6 +4,8 @@ import { System } from '../core/System';
 import type { Entity } from '../core/Entity';
 import type { EntityManager } from '../core/EntityManager';
 import type { Size } from '../components/Size';
+import type { CollisionBox } from '../components/CollisionBox';
+import { getAABB } from '../utils/collision';
 
 export class RenderSystem extends System {
   context: CanvasRenderingContext2D;
@@ -16,7 +18,7 @@ export class RenderSystem extends System {
   }
 
   update(entityManager: EntityManager, delta: number): void {
-    const entities = entityManager.query(['Renderable', 'Position', 'Size']);
+    const entities = entityManager.query(['Renderable']);
 
     this.render(entities);
     if (this.showFPS) {
@@ -28,14 +30,21 @@ export class RenderSystem extends System {
     this.clearCanvas();
 
     for (const entity of entities) {
-      this.context.save();
       const pos = entity.get<Position>('Position');
       const size = entity.get<Size>('Size');
       const renderable = entity.get<Renderable>('Renderable');
+      const collisionBox = entity.get<CollisionBox>('CollisionBox');
 
-      if (pos && size && renderable) {
+      if (!renderable) continue;
+
+      if (pos && size) {
         renderable.render(this.context, pos, size);
         this.renderPosition(pos);
+      }
+
+      if (pos && collisionBox) {
+        const { left, top, width, height } = getAABB(pos, collisionBox);
+        this.renderBox(left, top, width, height, 'green');
       }
     }
   }
@@ -50,15 +59,28 @@ export class RenderSystem extends System {
   }
 
   private renderFPS(delta: number): void {
+    this.context.save();
     const fps = Math.round(1000 / delta);
 
-    if (this.context) {
-      this.context.fillStyle = 'lightgrey';
-      this.context.fillRect(0, 0, 70, 50);
-      this.context.font = '12px Arial';
-      this.context.fillStyle = 'black';
-      this.context.fillText(`FPS: ${fps}`, 10, 30);
-    }
+    this.context.fillStyle = 'lightgrey';
+    this.context.fillRect(0, 0, 70, 50);
+    this.context.font = '12px Arial';
+    this.context.fillStyle = 'black';
+    this.context.fillText(`FPS: ${fps}`, 10, 30);
+    this.context.restore();
+  }
+
+  private renderBox(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    color = 'red',
+  ): void {
+    this.context.save();
+    this.context.strokeStyle = color;
+    this.context.strokeRect(x, y, width, height);
+    this.context.restore();
   }
 
   private clearCanvas(): void {

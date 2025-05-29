@@ -1,14 +1,9 @@
-import { createSize } from './components/Size';
-import { createPosition } from './components/Position';
-import { createRenderable } from './components/Renderable';
-import { createVelocity } from './components/Velocity';
-import { Entity } from './core/Entity';
 import { EntityManager } from './core/EntityManager';
 import { SystemManager } from './core/SystemManager';
-import { createRectRenderer } from './graphics/basicShapes';
 import { MovementSystem } from './systems/MovementSystem';
 import { RenderSystem } from './systems/RenderSystem';
-import { createSpeed } from './components/Speed';
+import { CollisionSystem } from './systems/CollisionSystem';
+import { createWorker } from './prefabs/worker';
 
 interface CivSimulationOptions {
   showFPS?: boolean;
@@ -25,6 +20,7 @@ export class CivSimulation {
   private context: CanvasRenderingContext2D | null;
   private systemManager: SystemManager;
   private movementSystem: MovementSystem;
+  private collisionSystem: CollisionSystem;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -43,8 +39,12 @@ export class CivSimulation {
     this.entityManager = new EntityManager();
     this.systemManager = new SystemManager();
 
-    this.renderSystem = new RenderSystem(this.context, this.showFPS);
     this.movementSystem = new MovementSystem();
+    this.collisionSystem = new CollisionSystem(
+      this.canvas.width,
+      this.canvas.height,
+    );
+    this.renderSystem = new RenderSystem(this.context, this.showFPS);
 
     this.init();
   }
@@ -65,25 +65,12 @@ export class CivSimulation {
   }
 
   private init(): void {
-    this.entityManager.add(
-      new Entity('Unit')
-        .add(createPosition(300, 150))
-        .add(createVelocity(10, 10))
-        .add(createSize(30, 30))
-        .add(createSpeed(20))
-        .add(createRenderable(createRectRenderer('#ff6b6b'))),
-    );
-    this.entityManager.add(
-      new Entity('Building')
-        .add(createPosition(100, 200))
-        .add(createSize(10, 10))
-        .add(createSpeed(10))
-        .add(createVelocity(12, 12))
-        .add(createRenderable(createRectRenderer('#ff6b6b'))),
-    );
+    this.entityManager.add(createWorker(10, 20));
+    this.entityManager.add(createWorker(100, 50));
 
-    this.systemManager.register(this.renderSystem);
     this.systemManager.register(this.movementSystem);
+    this.systemManager.register(this.collisionSystem);
+    this.systemManager.register(this.renderSystem);
   }
 
   private update(delta: number): void {
