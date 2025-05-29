@@ -24,12 +24,8 @@ export class Entity {
     return this;
   }
 
-  get<T extends Component>(name: ComponentName): T {
-    const component = this.components.get(name) as T | undefined;
-    if (!component) {
-      throw new Error(`Component ${name} not found on entity ${this.id}`);
-    }
-    return component;
+  get<T extends Component>(name: ComponentName): T | undefined {
+    return this.components.get(name) as T | undefined;
   }
 
   has(name: ComponentName): boolean {

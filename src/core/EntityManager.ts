@@ -20,6 +20,8 @@ export class EntityManager {
     return this.entities.filter((e) => e.type === type);
   }
 
+  // @TODO: Find a way to type query so it guaranties it will contain
+  // entities with correct queried types or an empty list
   query<T extends readonly ComponentName[]>(componentNames: T): Entity[] {
     return this.entities.filter((entity) =>
       componentNames.every((name) => entity.has(name)),

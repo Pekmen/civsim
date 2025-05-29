@@ -1,15 +1,14 @@
+import { createSize } from './components/Size';
 import { createPosition } from './components/Position';
 import { createRenderable } from './components/Renderable';
 import { createVelocity } from './components/Velocity';
 import { Entity } from './core/Entity';
 import { EntityManager } from './core/EntityManager';
 import { SystemManager } from './core/SystemManager';
-import {
-  createCircleRenderer,
-  createRectRenderer,
-} from './graphics/basicShapes';
+import { createRectRenderer } from './graphics/basicShapes';
 import { MovementSystem } from './systems/MovementSystem';
 import { RenderSystem } from './systems/RenderSystem';
+import { createSpeed } from './components/Speed';
 
 interface CivSimulationOptions {
   showFPS?: boolean;
@@ -70,12 +69,17 @@ export class CivSimulation {
       new Entity('Unit')
         .add(createPosition(300, 150))
         .add(createVelocity(10, 10))
-        .add(createRenderable(createCircleRenderer(30, '#4ecdc4'))),
+        .add(createSize(30, 30))
+        .add(createSpeed(20))
+        .add(createRenderable(createRectRenderer('#ff6b6b'))),
     );
     this.entityManager.add(
       new Entity('Building')
         .add(createPosition(100, 200))
-        .add(createRenderable(createRectRenderer(100, 100, '#ff6b6b'))),
+        .add(createSize(10, 10))
+        .add(createSpeed(10))
+        .add(createVelocity(12, 12))
+        .add(createRenderable(createRectRenderer('#ff6b6b'))),
     );
 
     this.systemManager.register(this.renderSystem);
