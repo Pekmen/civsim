@@ -42,8 +42,6 @@ export class CivSimulation {
     this.systemManager = new SystemManager();
     this.renderSystem = new RenderSystem(this.context, this.showFPS);
 
-    this.run = this.run.bind(this);
-
     this.init();
   }
 
@@ -83,7 +81,7 @@ export class CivSimulation {
     }
   }
 
-  private run(timeStamp: number): void {
+  private run = (timeStamp: number): void => {
     if (!this.isRunning) return;
 
     const delta = timeStamp - this.lastUpdateTime;
@@ -92,5 +90,5 @@ export class CivSimulation {
     this.update(delta);
 
     this.animationFrameId = requestAnimationFrame(this.run);
-  }
+  };
 }
