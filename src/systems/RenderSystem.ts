@@ -24,8 +24,8 @@ export class RenderSystem extends System {
 
   render(entities: Entity[]): void {
     for (const entity of entities) {
-      const position = entity.get<Position>('position');
-      const renderable = entity.get<Renderable>('renderable');
+      const position = entity.get<Position>('Position');
+      const renderable = entity.get<Renderable>('Renderable');
 
       if (renderable && position) {
         renderable.render(this.context, position);

@@ -7,13 +7,13 @@ export type RenderFunction = (
 ) => void;
 
 export interface Renderable extends Component {
-  readonly name: 'renderable';
+  readonly name: 'Renderable';
   render: RenderFunction;
   visible: boolean;
 }
 
 export const createRenderable = (render: RenderFunction, visible = true) => ({
-  name: 'renderable',
+  name: 'Renderable',
   render,
   visible,
 });

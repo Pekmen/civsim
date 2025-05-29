@@ -7,7 +7,7 @@ export type EntityType = string;
 export class Entity {
   public readonly id: Entityid;
   public readonly type: EntityType;
-  private components: Map<string, Component> = new Map();
+  private components: Map<ComponentName, Component> = new Map();
 
   constructor(type: EntityType) {
     this.id = generateId();
@@ -24,8 +24,12 @@ export class Entity {
     return this;
   }
 
-  get<T extends Component>(name: ComponentName): T | undefined {
-    return this.components.get(name) as T;
+  get<T extends Component>(name: ComponentName): T {
+    const component = this.components.get(name) as T | undefined;
+    if (!component) {
+      throw new Error(`Component ${name} not found on entity ${this.id}`);
+    }
+    return component;
   }
 
   has(name: ComponentName): boolean {

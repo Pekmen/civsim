@@ -1,4 +1,5 @@
 import type { Entity, EntityType } from './Entity';
+import type { ComponentName } from './Component';
 
 export class EntityManager {
   private entities: Entity[] = [];
@@ -19,8 +20,10 @@ export class EntityManager {
     return this.entities.filter((e) => e.type === type);
   }
 
-  getWithComponent(componentName: string): Entity[] {
-    return this.entities.filter((e) => e.has(componentName));
+  query<T extends readonly ComponentName[]>(componentNames: T): Entity[] {
+    return this.entities.filter((entity) =>
+      componentNames.every((name) => entity.has(name)),
+    );
   }
 
   clear(): void {

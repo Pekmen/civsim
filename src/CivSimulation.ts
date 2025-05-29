@@ -1,5 +1,6 @@
 import { createPosition } from './components/Position';
 import { createRenderable } from './components/Renderable';
+import { createVelocity } from './components/Velocity';
 import { Entity } from './core/Entity';
 import { EntityManager } from './core/EntityManager';
 import { SystemManager } from './core/SystemManager';
@@ -7,6 +8,7 @@ import {
   createCircleRenderer,
   createRectRenderer,
 } from './graphics/basicShapes';
+import { MovementSystem } from './systems/MovementSystem';
 import { RenderSystem } from './systems/RenderSystem';
 
 interface CivSimulationOptions {
@@ -22,7 +24,8 @@ export class CivSimulation {
   private entityManager: EntityManager;
   private renderSystem: RenderSystem;
   private context: CanvasRenderingContext2D | null;
-  systemManager: SystemManager;
+  private systemManager: SystemManager;
+  private movementSystem: MovementSystem;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -40,7 +43,9 @@ export class CivSimulation {
 
     this.entityManager = new EntityManager();
     this.systemManager = new SystemManager();
+
     this.renderSystem = new RenderSystem(this.context, this.showFPS);
+    this.movementSystem = new MovementSystem();
 
     this.init();
   }
@@ -62,17 +67,19 @@ export class CivSimulation {
 
   private init(): void {
     this.entityManager.add(
-      new Entity('unit')
+      new Entity('Unit')
         .add(createPosition(300, 150))
+        .add(createVelocity(10, 10))
         .add(createRenderable(createCircleRenderer(30, '#4ecdc4'))),
     );
     this.entityManager.add(
-      new Entity('building')
+      new Entity('Building')
         .add(createPosition(100, 200))
         .add(createRenderable(createRectRenderer(100, 100, '#ff6b6b'))),
     );
 
     this.systemManager.register(this.renderSystem);
+    this.systemManager.register(this.movementSystem);
   }
 
   private update(delta: number): void {
