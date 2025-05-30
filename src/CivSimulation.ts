@@ -4,6 +4,7 @@ import { MovementSystem } from './systems/MovementSystem';
 import { RenderSystem } from './systems/RenderSystem';
 import { CollisionSystem } from './systems/CollisionSystem';
 import { createWorker } from './prefabs/worker';
+import { randomPositionInBounds } from './utils/helpers';
 
 interface CivSimulationOptions {
   showFPS?: boolean;
@@ -65,8 +66,13 @@ export class CivSimulation {
   }
 
   private init(): void {
-    this.entityManager.add(createWorker(10, 20));
-    this.entityManager.add(createWorker(100, 50));
+    const randomPos = randomPositionInBounds(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height,
+    );
+    this.entityManager.add(createWorker(randomPos.x, randomPos.y));
 
     this.systemManager.register(this.movementSystem);
     this.systemManager.register(this.collisionSystem);

@@ -1,5 +1,6 @@
 import type { Component } from '../core/Component';
 
+// @TODO: is this needed?
 export interface BoundingBox extends Component {
   readonly name: 'BoundingBox';
   offsetX: number;

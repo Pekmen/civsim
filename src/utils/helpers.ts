@@ -7,5 +7,5 @@ export const randomPositionInBounds = (
   bottom: number,
 ) => ({
   x: Math.floor(Math.random() * (right - left + 1)) + left,
-  y: Math.floor(Math.random() * (bottom - top + 1)) + bottom,
+  y: Math.floor(Math.random() * (bottom - top + 1)) + top,
 });

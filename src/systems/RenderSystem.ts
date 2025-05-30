@@ -3,7 +3,6 @@ import type { Renderable } from '../components/Renderable';
 import { System } from '../core/System';
 import type { Entity } from '../core/Entity';
 import type { EntityManager } from '../core/EntityManager';
-import type { Size } from '../components/Size';
 import type { CollisionBox } from '../components/CollisionBox';
 import { getAABB } from '../utils/collision';
 
@@ -31,14 +30,13 @@ export class RenderSystem extends System {
 
     for (const entity of entities) {
       const pos = entity.get<Position>('Position');
-      const size = entity.get<Size>('Size');
       const renderable = entity.get<Renderable>('Renderable');
       const collisionBox = entity.get<CollisionBox>('CollisionBox');
 
       if (!renderable) continue;
 
-      if (pos && size) {
-        renderable.render(this.context, pos, size);
+      if (pos) {
+        renderable.render(this.context, pos);
         this.renderPosition(pos);
       }
 
