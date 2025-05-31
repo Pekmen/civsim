@@ -6,10 +6,12 @@ import { CollisionSystem } from './systems/CollisionSystem';
 import { createWorker } from './prefabs/worker';
 import { randomPositionInBounds } from './utils/helpers';
 import { BehaviorSystem } from './systems/BehaviorSystem';
+import { createHouse } from './prefabs/house';
 
 interface CivSimulationConfig {
   showFPS?: boolean;
   initialWorkers?: number;
+  initialHouses?: number;
 }
 
 export class CivSimulation {
@@ -21,6 +23,7 @@ export class CivSimulation {
 
   private showFPS: boolean | undefined;
   private initialWorkers: number;
+  private initialHouses: number;
 
   private entityManager: EntityManager;
   private systemManager: SystemManager;
@@ -32,7 +35,11 @@ export class CivSimulation {
 
   constructor(
     canvas: HTMLCanvasElement,
-    { showFPS = false, initialWorkers = 5 }: CivSimulationConfig = {},
+    {
+      showFPS = false,
+      initialWorkers = 5,
+      initialHouses = 3,
+    }: CivSimulationConfig = {},
   ) {
     this.canvas = canvas;
     this.context = this.canvas.getContext('2d');
@@ -44,6 +51,7 @@ export class CivSimulation {
 
     this.showFPS = showFPS;
     this.initialWorkers = initialWorkers;
+    this.initialHouses = initialHouses;
 
     this.entityManager = new EntityManager();
     this.systemManager = new SystemManager();
@@ -79,8 +87,12 @@ export class CivSimulation {
 
     for (let i = 0; i < this.initialWorkers; i++) {
       const randomPos = randomPositionInBounds(0, 0, width, height);
-
       this.entityManager.add(createWorker(randomPos.x, randomPos.y));
+    }
+
+    for (let i = 0; i < this.initialHouses; i++) {
+      const randomPos = randomPositionInBounds(0, 0, width, height);
+      this.entityManager.add(createHouse(randomPos.x, randomPos.y));
     }
 
     this.systemManager.register(this.behaviorSystem);

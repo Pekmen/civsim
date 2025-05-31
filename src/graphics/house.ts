@@ -1,13 +1,13 @@
 import type { Position } from '../components/Position';
 
-export const createWorkerRenderer = () => {
+export const createHouseRenderer = () => {
   return (context: CanvasRenderingContext2D, pos: Position) => {
     context.save();
 
     context.translate(pos.x, pos.y);
 
-    context.fillStyle = '#FFA652';
-    context.fillRect(-3, -6, 6, 12);
+    context.fillStyle = '#645452';
+    context.fillRect(-30, -20, 60, 40);
 
     context.restore();
   };
