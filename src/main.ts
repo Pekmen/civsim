@@ -6,7 +6,10 @@ const canvas = document.querySelector<HTMLCanvasElement>('#worldCanvas');
 if (canvas) {
   canvas.width = 800;
   canvas.height = 600;
-  const simulation = new CivSimulation(canvas, { showFPS: true });
+  const simulation = new CivSimulation(canvas, {
+    showFPS: true,
+    initialWorkers: 10,
+  });
   simulation.start();
 } else {
   alert("Your browser doesn't support canvas");

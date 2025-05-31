@@ -38,7 +38,7 @@ export class RenderSystem extends System {
 
       if (pos) {
         renderable.render(this.context, pos);
-        this.renderPosition(pos);
+        this.renderPixel(pos);
       }
 
       if (pos && collisionBox) {
@@ -62,7 +62,7 @@ export class RenderSystem extends System {
     this.context.restore();
   }
 
-  private renderPosition(pos: Position) {
+  private renderPixel(pos: Position) {
     this.context.save();
 
     this.context.fillStyle = 'black';
@@ -75,7 +75,9 @@ export class RenderSystem extends System {
     this.context.save();
     const fps = Math.round(1000 / delta);
 
+    this.context.strokeStyle = 'black';
     this.context.fillStyle = 'lightgrey';
+    this.context.strokeRect(0, 0, 70, 50);
     this.context.fillRect(0, 0, 70, 50);
     this.context.font = '12px Arial';
     this.context.fillStyle = 'black';

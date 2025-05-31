@@ -5,27 +5,34 @@ import { RenderSystem } from './systems/RenderSystem';
 import { CollisionSystem } from './systems/CollisionSystem';
 import { createWorker } from './prefabs/worker';
 import { randomPositionInBounds } from './utils/helpers';
+import { BehaviorSystem } from './systems/BehaviorSystem';
 
-interface CivSimulationOptions {
+interface CivSimulationConfig {
   showFPS?: boolean;
+  initialWorkers?: number;
 }
 
 export class CivSimulation {
   private isRunning = false;
+  private context: CanvasRenderingContext2D | null;
   private canvas: HTMLCanvasElement;
   private lastUpdateTime = 0;
   private animationFrameId: number | null = null;
+
   private showFPS: boolean | undefined;
+  private initialWorkers: number;
+
   private entityManager: EntityManager;
-  private renderSystem: RenderSystem;
-  private context: CanvasRenderingContext2D | null;
   private systemManager: SystemManager;
+
+  private behaviorSystem: BehaviorSystem;
+  private renderSystem: RenderSystem;
   private movementSystem: MovementSystem;
   private collisionSystem: CollisionSystem;
 
   constructor(
     canvas: HTMLCanvasElement,
-    { showFPS = false }: CivSimulationOptions = {},
+    { showFPS = false, initialWorkers = 5 }: CivSimulationConfig = {},
   ) {
     this.canvas = canvas;
     this.context = this.canvas.getContext('2d');
@@ -36,10 +43,12 @@ export class CivSimulation {
     }
 
     this.showFPS = showFPS;
+    this.initialWorkers = initialWorkers;
 
     this.entityManager = new EntityManager();
     this.systemManager = new SystemManager();
 
+    this.behaviorSystem = new BehaviorSystem();
     this.movementSystem = new MovementSystem();
     this.collisionSystem = new CollisionSystem(
       this.canvas.width,
@@ -66,14 +75,15 @@ export class CivSimulation {
   }
 
   private init(): void {
-    const randomPos = randomPositionInBounds(
-      0,
-      0,
-      this.canvas.width,
-      this.canvas.height,
-    );
-    this.entityManager.add(createWorker(randomPos.x, randomPos.y));
+    const { width, height } = this.canvas;
 
+    for (let i = 0; i < this.initialWorkers; i++) {
+      const randomPos = randomPositionInBounds(0, 0, width, height);
+
+      this.entityManager.add(createWorker(randomPos.x, randomPos.y));
+    }
+
+    this.systemManager.register(this.behaviorSystem);
     this.systemManager.register(this.movementSystem);
     this.systemManager.register(this.collisionSystem);
     this.systemManager.register(this.renderSystem);
