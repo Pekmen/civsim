@@ -8,6 +8,8 @@ import { randomPositionInBounds } from './utils/helpers';
 import { BehaviorSystem } from './systems/BehaviorSystem';
 import { createHouse } from './prefabs/house';
 
+const MAX_DELTA_TIME = 50;
+
 interface CivSimulationConfig {
   showFPS?: boolean;
   initialWorkers?: number;
@@ -56,7 +58,10 @@ export class CivSimulation {
     this.entityManager = new EntityManager();
     this.systemManager = new SystemManager();
 
-    this.behaviorSystem = new BehaviorSystem();
+    this.behaviorSystem = new BehaviorSystem(
+      this.canvas.width,
+      this.canvas.height,
+    );
     this.movementSystem = new MovementSystem();
     this.collisionSystem = new CollisionSystem(
       this.canvas.width,
@@ -110,7 +115,9 @@ export class CivSimulation {
   private run = (timeStamp: number): void => {
     if (!this.isRunning) return;
 
-    const delta = timeStamp - this.lastUpdateTime;
+    let delta = timeStamp - this.lastUpdateTime;
+    if (delta > MAX_DELTA_TIME) delta = MAX_DELTA_TIME;
+
     this.lastUpdateTime = timeStamp;
 
     this.update(delta);

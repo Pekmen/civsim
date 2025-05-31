@@ -1,6 +1,6 @@
 import type { Component } from '../core/Component';
 
-export type BehaviorType = 'idle';
+export type BehaviorType = 'idle' | 'wandering';
 
 export interface Behavior extends Component {
   readonly name: 'Behavior';
