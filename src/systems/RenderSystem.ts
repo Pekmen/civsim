@@ -19,15 +19,16 @@ export class RenderSystem extends System {
   update(entityManager: EntityManager, delta: number): void {
     const entities = entityManager.query(['Renderable']);
 
-    this.render(entities);
+    this.clearCanvas();
+    this.renderBackground();
+    this.renderEntities(entities);
+
     if (this.showFPS) {
       this.renderFPS(delta);
     }
   }
 
-  render(entities: Entity[]): void {
-    this.clearCanvas();
-
+  renderEntities(entities: Entity[]): void {
     for (const entity of entities) {
       const pos = entity.get<Position>('Position');
       const renderable = entity.get<Renderable>('Renderable');
@@ -45,6 +46,20 @@ export class RenderSystem extends System {
         this.renderBox(left, top, width, height, 'green');
       }
     }
+  }
+
+  private renderBackground() {
+    this.context.save();
+
+    this.context.fillStyle = 'lightgrey';
+    this.context.fillRect(
+      0,
+      0,
+      this.context.canvas.width,
+      this.context.canvas.height,
+    );
+
+    this.context.restore();
   }
 
   private renderPosition(pos: Position) {
