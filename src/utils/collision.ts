@@ -1,8 +1,8 @@
-import type { CollisionBox } from '../components/CollisionBox';
+import type { Box } from '../components/Box';
 import type { Position } from '../components/Position';
 import type { AABB } from '../types';
 
-export const getAABB = (position: Position, box: CollisionBox): AABB => {
+export const getAABB = <T extends Box>(position: Position, box: T): AABB => {
   const left = position.x + box.offsetX;
   const top = position.y + box.offsetY;
 

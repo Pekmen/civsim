@@ -19,6 +19,7 @@ export default defineConfig([
     },
   },
   ...tseslint.configs.recommended,
+  ...tseslint.configs.strict,
   {
     files: ['**/*.{ts,mts,cts}'],
     languageOptions: {

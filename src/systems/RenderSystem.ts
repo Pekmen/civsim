@@ -1,14 +1,15 @@
 import type { Position } from '../components/Position';
 import type { Renderable } from '../components/Renderable';
-import { System } from '../core/System';
 import type { Entity } from '../core/Entity';
 import type { EntityManager } from '../core/EntityManager';
 import type { CollisionBox } from '../components/CollisionBox';
+import type { BoundingBox } from '../components/BoundingBox';
 import { getAABB } from '../utils/collision';
+import { System } from '../core/System';
 
 export class RenderSystem extends System {
-  context: CanvasRenderingContext2D;
-  showFPS: boolean;
+  private context: CanvasRenderingContext2D;
+  private showFPS: boolean;
 
   constructor(context: CanvasRenderingContext2D, showFPS: boolean) {
     super('RenderSystem');
@@ -19,9 +20,23 @@ export class RenderSystem extends System {
   update(entityManager: EntityManager, delta: number): void {
     const entities = entityManager.query(['Renderable']);
 
+    const entitiesByRenderDepth = entities.sort((a, b) => {
+      const posA = a.get<Position>('Position');
+      const boxA = a.get<BoundingBox>('BoundingBox');
+      const posB = b.get<Position>('Position');
+      const boxB = b.get<BoundingBox>('BoundingBox');
+
+      if (!posA || !boxA || !posB || !boxB) return 0;
+
+      const bottomA = getAABB(posA, boxA).bottom;
+      const bottomB = getAABB(posB, boxB).bottom;
+
+      return bottomA - bottomB;
+    });
+
     this.clearCanvas();
     this.renderBackground();
-    this.renderEntities(entities);
+    this.renderEntities(entitiesByRenderDepth);
 
     if (this.showFPS) {
       this.renderFPS(delta);

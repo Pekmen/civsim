@@ -5,8 +5,8 @@ export type Entityid = string;
 export type EntityType = string;
 
 export class Entity {
-  public readonly id: Entityid;
-  public readonly type: EntityType;
+  readonly id: Entityid;
+  readonly type: EntityType;
   private components: Map<ComponentName, Component> = new Map();
 
   constructor(type: EntityType) {

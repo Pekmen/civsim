@@ -1,7 +1,6 @@
-import type { Component } from '../core/Component';
+import type { Box } from './Box';
 
-// @TODO: is this needed?
-export interface BoundingBox extends Component {
+export interface BoundingBox extends Box {
   readonly name: 'BoundingBox';
   offsetX: number;
   offsetY: number;

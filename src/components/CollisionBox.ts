@@ -1,6 +1,6 @@
-import type { Component } from '../core/Component';
+import type { Box } from './Box';
 
-export interface CollisionBox extends Component {
+export interface CollisionBox extends Box {
   readonly name: 'CollisionBox';
   offsetX: number;
   offsetY: number;
