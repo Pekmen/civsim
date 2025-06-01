@@ -2,16 +2,20 @@ import type { CollisionBox } from '../components/CollisionBox';
 import type { Position } from '../components/Position';
 import type { EntityManager } from '../core/EntityManager';
 import { System } from '../core/System';
-import { getAABB } from '../utils/collision';
+import type { AABB } from '../types';
+import {
+  getAABB,
+  getOutOfBoundsCorrection,
+  isAABBInside,
+} from '../utils/collision';
 
 export class CollisionSystem extends System {
-  private canvasWidth: number;
-  private canvasHeight: number;
+  private canvasAABB: AABB;
 
-  constructor(canvasWidth: number, canvasHeight: number) {
+  constructor(canvasAABB: AABB) {
     super('CollisionSystem');
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
+
+    this.canvasAABB = canvasAABB;
   }
 
   update(entityManager: EntityManager): void {
@@ -23,22 +27,16 @@ export class CollisionSystem extends System {
 
       if (!collisionBox || !pos) continue;
 
-      const { left, top, right, bottom } = getAABB(pos, collisionBox);
+      const entityAABB = getAABB(pos, collisionBox);
 
-      if (left < 0) {
-        pos.x = -collisionBox.offsetX;
-      }
+      const hasLeftCanvasBounds = !isAABBInside(entityAABB, this.canvasAABB);
 
-      if (top < 0) {
-        pos.y = -collisionBox.offsetY;
-      }
-
-      if (right > this.canvasWidth) {
-        pos.x = this.canvasWidth - collisionBox.width - collisionBox.offsetX;
-      }
-
-      if (bottom > this.canvasHeight) {
-        pos.y = this.canvasHeight - collisionBox.height - collisionBox.offsetY;
+      if (hasLeftCanvasBounds) {
+        const collisionResponse = getOutOfBoundsCorrection(
+          entityAABB,
+          this.canvasAABB,
+        );
+        entity.add(collisionResponse);
       }
     }
   }

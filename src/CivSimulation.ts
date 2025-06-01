@@ -7,6 +7,7 @@ import { createWorker } from './prefabs/worker';
 import { randomPositionInBounds } from './utils/helpers';
 import { BehaviorSystem } from './systems/BehaviorSystem';
 import { createHouse } from './prefabs/house';
+import { createCanvasAABB } from './utils/collision';
 
 const MAX_DELTA_TIME = 50;
 
@@ -64,8 +65,7 @@ export class CivSimulation {
     );
     this.movementSystem = new MovementSystem();
     this.collisionSystem = new CollisionSystem(
-      this.canvas.width,
-      this.canvas.height,
+      createCanvasAABB(this.canvas.width, this.canvas.height),
     );
     this.renderSystem = new RenderSystem(this.context, this.showFPS);
 

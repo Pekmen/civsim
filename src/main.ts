@@ -8,8 +8,8 @@ if (canvas) {
   canvas.height = 600;
   const simulation = new CivSimulation(canvas, {
     showFPS: true,
-    initialWorkers: 20,
-    initialHouses: 5,
+    initialWorkers: 1,
+    initialHouses: 0,
   });
   simulation.start();
 } else {
