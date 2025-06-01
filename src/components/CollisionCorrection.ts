@@ -1,20 +1,20 @@
 import type { Component } from '../core/Component';
 
-export interface CollisionResponse extends Component {
-  readonly name: 'CollisionResponse';
+export interface CollisionCorrection extends Component {
+  readonly name: 'CollisionCorrection';
   positionCorrectionX: number;
   positionCorrectionY: number;
   velocityCorrectionX: number;
   velocityCorrectionY: number;
 }
 
-export const createCollisonResponse = (
+export const createCollisionCorrection = (
   positionCorrectionX = 0,
   positionCorrectionY = 0,
   velocityCorrectionX = 0,
   velocityCorrectionY = 0,
-): CollisionResponse => ({
-  name: 'CollisionResponse',
+): CollisionCorrection => ({
+  name: 'CollisionCorrection',
   positionCorrectionX,
   positionCorrectionY,
   velocityCorrectionX,

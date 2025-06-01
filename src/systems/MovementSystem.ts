@@ -4,7 +4,7 @@ import type { Position } from '../components/Position';
 import type { Velocity } from '../components/Velocity';
 import type { Speed } from '../components/Speed';
 import type { MoveTarget } from '../components/MoveTarget';
-import type { CollisionResponse } from '../components/CollisionResponse';
+import type { CollisionCorrection } from '../components/CollisionCorrection';
 
 const TARGET_PROXIMITY_TRESHOLD = 10;
 
@@ -21,8 +21,9 @@ export class MovementSystem extends System {
       const vel = entity.get<Velocity>('Velocity');
       const speed = entity.get<Speed>('Speed');
       const target = entity.get<MoveTarget>('MoveTarget');
-      const collisionResponse =
-        entity.get<CollisionResponse>('CollisionResponse');
+      const collisionCorrection = entity.get<CollisionCorrection>(
+        'CollisionCorrection',
+      );
 
       if (!pos || !vel || !speed) continue;
 
@@ -46,9 +47,9 @@ export class MovementSystem extends System {
       }
 
       // update collision velocity
-      if (collisionResponse) {
-        vel.vx += collisionResponse.velocityCorrectionX;
-        vel.vy += collisionResponse.velocityCorrectionY;
+      if (collisionCorrection) {
+        vel.vx += collisionCorrection.velocityCorrectionX;
+        vel.vy += collisionCorrection.velocityCorrectionY;
       }
 
       // normalize and calculate next position
@@ -61,11 +62,11 @@ export class MovementSystem extends System {
       }
 
       // override position if there is colision
-      if (collisionResponse) {
-        pos.x += collisionResponse.positionCorrectionX;
-        pos.y += collisionResponse.positionCorrectionY;
+      if (collisionCorrection) {
+        pos.x += collisionCorrection.positionCorrectionX;
+        pos.y += collisionCorrection.positionCorrectionY;
 
-        entity.remove('CollisionResponse');
+        entity.remove('CollisionCorrection');
       }
     }
   }

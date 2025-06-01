@@ -32,11 +32,11 @@ export class CollisionSystem extends System {
       const hasLeftCanvasBounds = !isAABBInside(entityAABB, this.canvasAABB);
 
       if (hasLeftCanvasBounds) {
-        const collisionResponse = getOutOfBoundsCorrection(
+        const collisionCorrection = getOutOfBoundsCorrection(
           entityAABB,
           this.canvasAABB,
         );
-        entity.add(collisionResponse);
+        entity.add(collisionCorrection);
       }
     }
   }

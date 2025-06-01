@@ -1,8 +1,8 @@
 import type { Box } from '../components/Box';
 import {
-  createCollisonResponse,
-  type CollisionResponse,
-} from '../components/CollisionResponse';
+  createCollisionCorrection,
+  type CollisionCorrection,
+} from '../components/CollisionCorrection';
 import type { Position } from '../components/Position';
 import type { AABB } from '../types';
 
@@ -56,7 +56,7 @@ export const createCanvasAABB = (width: number, height: number): AABB => ({
 export const getOutOfBoundsCorrection = (
   aabb: AABB,
   bounds: AABB,
-): CollisionResponse => {
+): CollisionCorrection => {
   let positionCorrectionX = 0;
   let positionCorrectionY = 0;
 
@@ -72,5 +72,5 @@ export const getOutOfBoundsCorrection = (
     positionCorrectionY = bounds.top - aabb.top;
   }
 
-  return createCollisonResponse(positionCorrectionX, positionCorrectionY);
+  return createCollisionCorrection(positionCorrectionX, positionCorrectionY);
 };
