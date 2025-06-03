@@ -1,8 +1,8 @@
 import {
-  type Position,
   type Box,
   type CollisionCorrection,
   createCollisionCorrection,
+  type Position,
 } from '../components';
 import type { AABB } from '../types';
 

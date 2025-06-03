@@ -1,10 +1,10 @@
 import { EntityManager, SystemManager } from './core';
-import { createWorker, createHouse } from './prefabs';
+import { createHouse, createWorker } from './prefabs';
 import {
   BehaviorSystem,
-  RenderSystem,
-  MovementSystem,
   CollisionSystem,
+  MovementSystem,
+  RenderSystem,
 } from './systems';
 import { createCanvasAABB, randomPositionInBounds } from './utils';
 
@@ -90,12 +90,22 @@ export class CivSimulation {
     const { width, height } = this.canvas;
 
     for (let i = 0; i < this.initialWorkers; i++) {
-      const randomPos = randomPositionInBounds(0, 0, width, height);
+      const randomPos = randomPositionInBounds({
+        left: 0,
+        top: 0,
+        right: width,
+        bottom: height,
+      });
       this.entityManager.add(createWorker({ x: randomPos.x, y: randomPos.y }));
     }
 
     for (let i = 0; i < this.initialHouses; i++) {
-      const randomPos = randomPositionInBounds(0, 0, width, height);
+      const randomPos = randomPositionInBounds({
+        left: 0,
+        top: 0,
+        right: width,
+        bottom: height,
+      });
       this.entityManager.add(createHouse({ x: randomPos.x, y: randomPos.y }));
     }
 

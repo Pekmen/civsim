@@ -1,11 +1,19 @@
 import type {
-  Position,
   BoundingBox,
-  Renderable,
   CollisionBox,
+  Position,
+  Renderable,
 } from '../components';
-import { System, Entity, type SystemUpdateParams } from '../core';
+import { Entity, System, type SystemUpdateParams } from '../core';
 import { getAABB } from '../utils';
+
+type RenderBoxOptions = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  color?: string;
+};
 
 export class RenderSystem extends System {
   private context: CanvasRenderingContext2D;
@@ -58,12 +66,12 @@ export class RenderSystem extends System {
 
       if (pos && collisionBox) {
         const { left, top, width, height } = getAABB(pos, collisionBox);
-        this.renderBox(left, top, width, height, 'green');
+        this.renderBox({ x: left, y: top, width, height, color: 'green' });
       }
     }
   }
 
-  private renderBackground() {
+  private renderBackground(): void {
     this.context.save();
 
     this.context.fillStyle = 'lightgrey';
@@ -77,7 +85,7 @@ export class RenderSystem extends System {
     this.context.restore();
   }
 
-  private renderPixel(pos: Position) {
+  private renderPixel(pos: Position): void {
     this.context.save();
 
     this.context.fillStyle = 'black';
@@ -100,13 +108,13 @@ export class RenderSystem extends System {
     this.context.restore();
   }
 
-  private renderBox(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
+  private renderBox({
+    x = 0,
+    y = 0,
+    width = 0,
+    height = 0,
     color = 'red',
-  ): void {
+  }: RenderBoxOptions): void {
     this.context.save();
     this.context.strokeStyle = color;
     this.context.strokeRect(x, y, width, height);

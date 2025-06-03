@@ -1,9 +1,9 @@
 import type {
-  Position,
-  Velocity,
-  Speed,
-  MoveTarget,
   CollisionCorrection,
+  MoveTarget,
+  Position,
+  Speed,
+  Velocity,
 } from '../components';
 import { System, type SystemUpdateParams } from '../core';
 

@@ -1,12 +1,12 @@
 import {
   type BehaviorType,
-  createPosition,
-  createVelocity,
-  createSpeed,
+  createBehavior,
   createBoundingBox,
   createCollisionBox,
-  createBehavior,
+  createPosition,
   createRenderable,
+  createSpeed,
+  createVelocity,
 } from '../components';
 import { Entity } from '../core';
 import { createWorkerRenderer } from '../graphics';
@@ -27,7 +27,7 @@ export const createWorker = ({
   vy = 0,
   speed = 50,
   behavior = 'wandering' as BehaviorType,
-}) => {
+}): Entity => {
   return new Entity('Worker')
     .add(createPosition({ x, y }))
     .add(createVelocity({ vx, vy }))

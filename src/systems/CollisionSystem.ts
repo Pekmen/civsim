@@ -1,16 +1,16 @@
 import {
-  type CollisionBox,
-  type Position,
   type Behavior,
+  type CollisionBox,
   createCollisionCorrection,
+  type Position,
 } from '../components';
 import { System, type SystemUpdateParams } from '../core';
 import type { AABB } from '../types';
 import {
-  getAABB,
   aabbIntersects,
-  isAABBInside,
+  getAABB,
   getOutOfBoundsCorrection,
+  isAABBInside,
 } from '../utils';
 
 export class CollisionSystem extends System {

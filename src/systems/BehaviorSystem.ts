@@ -1,10 +1,10 @@
 import {
   type Behavior,
-  type Position,
-  type Speed,
-  type MoveTarget,
   type BoundingBox,
   createMoveTarget,
+  type MoveTarget,
+  type Position,
+  type Speed,
 } from '../components';
 import { System, type SystemUpdateParams } from '../core';
 import { randomPositionInBounds } from '../utils';
@@ -36,12 +36,12 @@ export class BehaviorSystem extends System {
         case 'wandering':
           if (!moveTarget && boundingBox && pos && speed) {
             const { width, height } = boundingBox;
-            const randomPos = randomPositionInBounds(
-              width,
-              height,
-              this.canvasWidth - width,
-              this.canvasHeight - height,
-            );
+            const randomPos = randomPositionInBounds({
+              left: width,
+              top: height,
+              right: this.canvasWidth - width,
+              bottom: this.canvasHeight - height,
+            });
             entity.add(createMoveTarget({ x: randomPos.x, y: randomPos.y }));
           }
           break;

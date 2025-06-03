@@ -1,5 +1,6 @@
-import { CivSimulation } from './CivSimulation';
 import './style.css';
+
+import { CivSimulation } from './CivSimulation';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#worldCanvas');
 

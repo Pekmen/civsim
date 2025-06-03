@@ -1,5 +1,5 @@
-import type { Component, ComponentName } from '.';
 import { generateId } from '../utils';
+import type { Component, ComponentName } from '.';
 
 export type Entityid = string;
 export type EntityType = string;

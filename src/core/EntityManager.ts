@@ -11,7 +11,7 @@ export class EntityManager {
     this.entities = this.entities.filter((e) => e.id !== entity.id);
   }
 
-  getAll() {
+  getAll(): Entity[] {
     return this.entities;
   }
 

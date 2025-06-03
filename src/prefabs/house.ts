@@ -1,13 +1,13 @@
 import {
-  createPosition,
   createBoundingBox,
   createCollisionBox,
+  createPosition,
   createRenderable,
 } from '../components';
 import { Entity } from '../core';
 import { createHouseRenderer } from '../graphics';
 
-export const createHouse = ({ x, y }: { x: number; y: number }) => {
+export const createHouse = ({ x, y }: { x: number; y: number }): Entity => {
   return new Entity('House')
     .add(createPosition({ x, y }))
     .add(

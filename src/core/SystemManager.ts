@@ -19,7 +19,7 @@ export class SystemManager {
     return this.systems.some((s) => s.name === systemName);
   }
 
-  getAll() {
+  getAll(): System[] {
     return this.systems;
   }
 }

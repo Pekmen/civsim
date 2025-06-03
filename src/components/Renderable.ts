@@ -1,5 +1,5 @@
-import type { Position } from '.';
 import type { Component } from '../core';
+import type { Position } from '.';
 
 export type RenderFunction = ({
   context,
@@ -14,7 +14,7 @@ export interface Renderable extends Component {
   render: RenderFunction;
 }
 
-export const createRenderable = (render: RenderFunction) => ({
+export const createRenderable = (render: RenderFunction): Renderable => ({
   name: 'Renderable',
   render,
 });
