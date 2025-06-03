@@ -41,7 +41,7 @@ export class CivSimulation {
     {
       showFPS = false,
       initialWorkers = 5,
-      initialHouses = 3,
+      initialHouses = 5,
     }: CivSimulationConfig = {},
   ) {
     this.canvas = canvas;
@@ -92,7 +92,7 @@ export class CivSimulation {
 
     for (let i = 0; i < this.initialWorkers; i++) {
       const randomPos = randomPositionInBounds(0, 0, width, height);
-      this.entityManager.add(createWorker(randomPos.x, randomPos.y));
+      this.entityManager.add(createWorker({ x: randomPos.x, y: randomPos.y }));
     }
 
     for (let i = 0; i < this.initialHouses; i++) {
@@ -101,8 +101,8 @@ export class CivSimulation {
     }
 
     this.systemManager.register(this.behaviorSystem);
-    this.systemManager.register(this.movementSystem);
     this.systemManager.register(this.collisionSystem);
+    this.systemManager.register(this.movementSystem);
     this.systemManager.register(this.renderSystem);
   }
 

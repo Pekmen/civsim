@@ -1,9 +1,12 @@
+import type { Behavior } from '../components/Behavior';
 import type { CollisionBox } from '../components/CollisionBox';
+import { createCollisionCorrection } from '../components/CollisionCorrection';
 import type { Position } from '../components/Position';
 import type { EntityManager } from '../core/EntityManager';
 import { System } from '../core/System';
 import type { AABB } from '../types';
 import {
+  aabbIntersects,
   getAABB,
   getOutOfBoundsCorrection,
   isAABBInside,
@@ -19,19 +22,58 @@ export class CollisionSystem extends System {
   }
 
   update(entityManager: EntityManager): void {
-    const entites = entityManager.query(['CollisionBox', 'Position']);
+    const entities = entityManager.query(['CollisionBox', 'Position']);
 
-    for (const entity of entites) {
+    for (const entity of entities) {
       const collisionBox = entity.get<CollisionBox>('CollisionBox');
       const pos = entity.get<Position>('Position');
+      const behavior = entity.get<Behavior>('Behavior');
 
       if (!collisionBox || !pos) continue;
 
       const entityAABB = getAABB(pos, collisionBox);
 
-      const hasLeftCanvasBounds = !isAABBInside(entityAABB, this.canvasAABB);
+      // entities collision
+      // initial bruteforce implementation
+      for (const otherEntity of entities) {
+        if (entity.id === otherEntity.id) continue;
 
-      if (hasLeftCanvasBounds) {
+        const otherEntityPos = otherEntity.get<Position>('Position');
+        const otherEntityCollisionBox =
+          otherEntity.get<CollisionBox>('CollisionBox');
+
+        if (otherEntityPos && otherEntityCollisionBox) {
+          const otherEntityAABB = getAABB(
+            otherEntityPos,
+            otherEntityCollisionBox,
+          );
+
+          const isColliding = aabbIntersects(entityAABB, otherEntityAABB);
+
+          // basic avoidance, will be improved
+          if (isColliding && behavior?.current !== 'idle') {
+            // Calculate direction from obstacle to entity
+
+            const dx = pos.x - otherEntityPos.x;
+            const dy = pos.y - otherEntityPos.y;
+            const distance = Math.hypot(dx, dy);
+
+            if (distance > 0) {
+              // Push away from obstacle
+              const pushStrength = 0.5;
+              const pushX = (dx / distance) * pushStrength;
+              const pushY = (dy / distance) * pushStrength;
+
+              entity.add(createCollisionCorrection(pushX, pushY));
+            }
+          }
+        }
+      }
+
+      const isOutOfCanvasBounds = !isAABBInside(entityAABB, this.canvasAABB);
+
+      // Canvas bounds collision
+      if (isOutOfCanvasBounds) {
         const collisionCorrection = getOutOfBoundsCorrection(
           entityAABB,
           this.canvasAABB,
