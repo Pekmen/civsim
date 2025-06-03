@@ -1,4 +1,4 @@
-import type { Position } from '../components/Position';
+import type { Position } from '../components';
 
 export const createWorkerRenderer = () => {
   return (context: CanvasRenderingContext2D, pos: Position) => {

@@ -1,4 +1,4 @@
-import type { Box } from './Box';
+import type { Box } from '.';
 
 export interface CollisionBox extends Box {
   readonly name: 'CollisionBox';

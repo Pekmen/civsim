@@ -1,4 +1,4 @@
-import type { Component } from '../core/Component';
+import type { Component } from '../core';
 
 export interface Velocity extends Component {
   readonly name: 'Velocity';

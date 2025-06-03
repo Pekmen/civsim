@@ -1,10 +1,11 @@
-import type { EntityManager } from '../core/EntityManager';
-import { System } from '../core/System';
-import type { Position } from '../components/Position';
-import type { Velocity } from '../components/Velocity';
-import type { Speed } from '../components/Speed';
-import type { MoveTarget } from '../components/MoveTarget';
-import type { CollisionCorrection } from '../components/CollisionCorrection';
+import type {
+  Position,
+  Velocity,
+  Speed,
+  MoveTarget,
+  CollisionCorrection,
+} from '../components';
+import { System, EntityManager } from '../core';
 
 const TARGET_PROXIMITY_TRESHOLD = 10;
 

@@ -1,11 +1,13 @@
-import type { Behavior } from '../components/Behavior';
-import type { BoundingBox } from '../components/BoundingBox';
-import { createMoveTarget, type MoveTarget } from '../components/MoveTarget';
-import type { Position } from '../components/Position';
-import type { Speed } from '../components/Speed';
-import type { EntityManager } from '../core/EntityManager';
-import { System } from '../core/System';
-import { randomPositionInBounds } from '../utils/helpers';
+import {
+  type Behavior,
+  type Position,
+  type Speed,
+  type MoveTarget,
+  type BoundingBox,
+  createMoveTarget,
+} from '../components';
+import { System, EntityManager } from '../core';
+import { randomPositionInBounds } from '../utils';
 
 export class BehaviorSystem extends System {
   private canvasWidth: number;

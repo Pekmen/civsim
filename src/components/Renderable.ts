@@ -1,5 +1,5 @@
-import type { Component } from '../core/Component';
-import type { Position } from './Position';
+import type { Position } from '.';
+import type { Component } from '../core';
 
 export type RenderFunction = (
   ctx: CanvasRenderingContext2D,

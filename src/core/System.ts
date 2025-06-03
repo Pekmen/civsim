@@ -1,4 +1,4 @@
-import type { EntityManager } from './EntityManager';
+import type { EntityManager } from '.';
 
 export type SystemName = string;
 

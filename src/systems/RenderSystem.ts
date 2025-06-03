@@ -1,11 +1,11 @@
-import type { Position } from '../components/Position';
-import type { Renderable } from '../components/Renderable';
-import type { Entity } from '../core/Entity';
-import type { EntityManager } from '../core/EntityManager';
-import type { CollisionBox } from '../components/CollisionBox';
-import type { BoundingBox } from '../components/BoundingBox';
-import { getAABB } from '../utils/collision';
-import { System } from '../core/System';
+import type {
+  Position,
+  BoundingBox,
+  Renderable,
+  CollisionBox,
+} from '../components';
+import { System, EntityManager, Entity } from '../core';
+import { getAABB } from '../utils';
 
 export class RenderSystem extends System {
   private context: CanvasRenderingContext2D;

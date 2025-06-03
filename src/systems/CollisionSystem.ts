@@ -1,16 +1,17 @@
-import type { Behavior } from '../components/Behavior';
-import type { CollisionBox } from '../components/CollisionBox';
-import { createCollisionCorrection } from '../components/CollisionCorrection';
-import type { Position } from '../components/Position';
-import type { EntityManager } from '../core/EntityManager';
-import { System } from '../core/System';
+import {
+  type CollisionBox,
+  type Position,
+  type Behavior,
+  createCollisionCorrection,
+} from '../components';
+import { System, EntityManager } from '../core';
 import type { AABB } from '../types';
 import {
-  aabbIntersects,
   getAABB,
-  getOutOfBoundsCorrection,
+  aabbIntersects,
   isAABBInside,
-} from '../utils/collision';
+  getOutOfBoundsCorrection,
+} from '../utils';
 
 export class CollisionSystem extends System {
   private canvasAABB: AABB;

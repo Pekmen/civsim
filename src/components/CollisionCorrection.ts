@@ -1,4 +1,4 @@
-import type { Component } from '../core/Component';
+import type { Component } from '../core';
 
 export interface CollisionCorrection extends Component {
   readonly name: 'CollisionCorrection';

@@ -1,4 +1,4 @@
-import type { System, SystemName } from './System';
+import type { System, SystemName } from '.';
 
 export class SystemManager {
   systems: System[];

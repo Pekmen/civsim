@@ -1,9 +1,9 @@
-import type { Box } from '../components/Box';
 import {
-  createCollisionCorrection,
+  type Position,
+  type Box,
   type CollisionCorrection,
-} from '../components/CollisionCorrection';
-import type { Position } from '../components/Position';
+  createCollisionCorrection,
+} from '../components';
 import type { AABB } from '../types';
 
 export const getAABB = (position: Position, box: Box): AABB => {

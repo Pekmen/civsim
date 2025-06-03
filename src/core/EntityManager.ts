@@ -1,5 +1,4 @@
-import type { Entity, EntityType } from './Entity';
-import type { ComponentName } from './Component';
+import type { ComponentName, Entity, EntityType } from '.';
 
 export class EntityManager {
   private entities: Entity[] = [];

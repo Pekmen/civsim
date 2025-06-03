@@ -1,12 +1,15 @@
-import { createBehavior, type BehaviorType } from '../components/Behavior';
-import { createBoundingBox } from '../components/BoundingBox';
-import { createCollisionBox } from '../components/CollisionBox';
-import { createPosition } from '../components/Position';
-import { createRenderable } from '../components/Renderable';
-import { createSpeed } from '../components/Speed';
-import { createVelocity } from '../components/Velocity';
-import { Entity } from '../core/Entity';
-import { createWorkerRenderer } from '../graphics/worker';
+import {
+  type BehaviorType,
+  createPosition,
+  createVelocity,
+  createSpeed,
+  createBoundingBox,
+  createCollisionBox,
+  createBehavior,
+  createRenderable,
+} from '../components';
+import { Entity } from '../core';
+import { createWorkerRenderer } from '../graphics';
 
 export interface createWorkerOptions {
   x: number;

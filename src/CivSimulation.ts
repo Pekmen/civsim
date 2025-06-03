@@ -1,13 +1,12 @@
-import { EntityManager } from './core/EntityManager';
-import { SystemManager } from './core/SystemManager';
-import { MovementSystem } from './systems/MovementSystem';
-import { RenderSystem } from './systems/RenderSystem';
-import { CollisionSystem } from './systems/CollisionSystem';
-import { createWorker } from './prefabs/worker';
-import { randomPositionInBounds } from './utils/helpers';
-import { BehaviorSystem } from './systems/BehaviorSystem';
-import { createHouse } from './prefabs/house';
-import { createCanvasAABB } from './utils/collision';
+import { EntityManager, SystemManager } from './core';
+import { createWorker, createHouse } from './prefabs';
+import {
+  BehaviorSystem,
+  RenderSystem,
+  MovementSystem,
+  CollisionSystem,
+} from './systems';
+import { createCanvasAABB, randomPositionInBounds } from './utils';
 
 const MAX_DELTA_TIME = 50;
 
