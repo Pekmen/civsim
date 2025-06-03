@@ -1,6 +1,10 @@
 import type { EntityManager } from '.';
 
 export type SystemName = string;
+export type SystemUpdateParams = {
+  entityManager: EntityManager;
+  deltaTime: number;
+};
 
 export abstract class System {
   readonly name: SystemName;
@@ -9,5 +13,5 @@ export abstract class System {
     this.name = name;
   }
 
-  abstract update(entityManager: EntityManager, deltaTime: number): void;
+  abstract update({ entityManager, deltaTime }: SystemUpdateParams): void;
 }

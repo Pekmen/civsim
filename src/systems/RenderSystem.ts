@@ -4,7 +4,7 @@ import type {
   Renderable,
   CollisionBox,
 } from '../components';
-import { System, EntityManager, Entity } from '../core';
+import { System, Entity, type SystemUpdateParams } from '../core';
 import { getAABB } from '../utils';
 
 export class RenderSystem extends System {
@@ -17,7 +17,7 @@ export class RenderSystem extends System {
     this.showFPS = showFPS;
   }
 
-  update(entityManager: EntityManager, delta: number): void {
+  update({ entityManager, deltaTime }: SystemUpdateParams): void {
     const entities = entityManager.query(['Renderable']);
 
     const entitiesByRenderDepth = entities.sort((a, b) => {
@@ -39,7 +39,7 @@ export class RenderSystem extends System {
     this.renderEntities(entitiesByRenderDepth);
 
     if (this.showFPS) {
-      this.renderFPS(delta);
+      this.renderFPS(deltaTime);
     }
   }
 
@@ -52,7 +52,7 @@ export class RenderSystem extends System {
       if (!renderable) continue;
 
       if (pos) {
-        renderable.render(this.context, pos);
+        renderable.render({ context: this.context, position: pos });
         this.renderPixel(pos);
       }
 

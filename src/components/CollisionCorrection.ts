@@ -8,12 +8,12 @@ export interface CollisionCorrection extends Component {
   velocityCorrectionY: number;
 }
 
-export const createCollisionCorrection = (
+export const createCollisionCorrection = ({
   positionCorrectionX = 0,
   positionCorrectionY = 0,
   velocityCorrectionX = 0,
   velocityCorrectionY = 0,
-): CollisionCorrection => ({
+}): CollisionCorrection => ({
   name: 'CollisionCorrection',
   positionCorrectionX,
   positionCorrectionY,

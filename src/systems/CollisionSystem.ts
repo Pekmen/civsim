@@ -4,7 +4,7 @@ import {
   type Behavior,
   createCollisionCorrection,
 } from '../components';
-import { System, EntityManager } from '../core';
+import { System, type SystemUpdateParams } from '../core';
 import type { AABB } from '../types';
 import {
   getAABB,
@@ -22,7 +22,7 @@ export class CollisionSystem extends System {
     this.canvasAABB = canvasAABB;
   }
 
-  update(entityManager: EntityManager): void {
+  update({ entityManager }: SystemUpdateParams): void {
     const entities = entityManager.query(['CollisionBox', 'Position']);
 
     for (const entity of entities) {
@@ -65,7 +65,12 @@ export class CollisionSystem extends System {
               const pushX = (dx / distance) * pushStrength;
               const pushY = (dy / distance) * pushStrength;
 
-              entity.add(createCollisionCorrection(pushX, pushY));
+              entity.add(
+                createCollisionCorrection({
+                  positionCorrectionX: pushX,
+                  positionCorrectionY: pushY,
+                }),
+              );
             }
           }
         }

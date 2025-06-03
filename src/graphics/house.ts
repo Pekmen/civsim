@@ -1,10 +1,16 @@
-import type { Position } from '../components';
+import type { Position, RenderFunction } from '../components';
 
-export const createHouseRenderer = () => {
-  return (context: CanvasRenderingContext2D, pos: Position) => {
+export const createHouseRenderer = (): RenderFunction => {
+  return ({
+    context,
+    position,
+  }: {
+    context: CanvasRenderingContext2D;
+    position: Position;
+  }) => {
     context.save();
 
-    context.translate(pos.x, pos.y);
+    context.translate(position.x, position.y);
 
     context.fillStyle = '#645452';
     context.fillRect(-30, -20, 60, 40);

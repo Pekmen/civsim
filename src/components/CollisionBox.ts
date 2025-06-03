@@ -8,12 +8,12 @@ export interface CollisionBox extends Box {
   height: number;
 }
 
-export const createCollisionBox = (
-  offsetX: number,
-  offsetY: number,
-  width: number,
-  height: number,
-): CollisionBox => ({
+export const createCollisionBox = ({
+  offsetX = 0,
+  offsetY = 0,
+  width = 0,
+  height = 0,
+}): CollisionBox => ({
   name: 'CollisionBox',
   offsetX,
   offsetY,

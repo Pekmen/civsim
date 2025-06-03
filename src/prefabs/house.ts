@@ -7,10 +7,24 @@ import {
 import { Entity } from '../core';
 import { createHouseRenderer } from '../graphics';
 
-export const createHouse = (x: number, y: number) => {
+export const createHouse = ({ x, y }: { x: number; y: number }) => {
   return new Entity('House')
-    .add(createPosition(x, y))
-    .add(createBoundingBox(-30, -20, 60, 40))
-    .add(createCollisionBox(-30, 10, 60, 10))
+    .add(createPosition({ x, y }))
+    .add(
+      createBoundingBox({
+        offsetX: -30,
+        offsetY: -20,
+        width: 60,
+        height: 40,
+      }),
+    )
+    .add(
+      createCollisionBox({
+        offsetX: -30,
+        offsetY: -10,
+        width: 60,
+        height: 10,
+      }),
+    )
     .add(createRenderable(createHouseRenderer()));
 };

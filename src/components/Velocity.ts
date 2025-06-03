@@ -6,7 +6,7 @@ export interface Velocity extends Component {
   vy: number;
 }
 
-export const createVelocity = (vx: number, vy: number): Velocity => ({
+export const createVelocity = ({ vx = 0, vy = 0 }): Velocity => ({
   name: 'Velocity',
   vx,
   vy,

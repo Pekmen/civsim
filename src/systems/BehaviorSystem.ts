@@ -6,7 +6,7 @@ import {
   type BoundingBox,
   createMoveTarget,
 } from '../components';
-import { System, EntityManager } from '../core';
+import { System, type SystemUpdateParams } from '../core';
 import { randomPositionInBounds } from '../utils';
 
 export class BehaviorSystem extends System {
@@ -19,7 +19,7 @@ export class BehaviorSystem extends System {
     this.canvasHeight = canvasHeight;
   }
 
-  update(entityManager: EntityManager): void {
+  update({ entityManager }: SystemUpdateParams): void {
     const entities = entityManager.query(['Behavior']);
 
     for (const entity of entities) {
@@ -42,7 +42,7 @@ export class BehaviorSystem extends System {
               this.canvasWidth - width,
               this.canvasHeight - height,
             );
-            entity.add(createMoveTarget(randomPos.x, randomPos.y));
+            entity.add(createMoveTarget({ x: randomPos.x, y: randomPos.y }));
           }
           break;
 

@@ -8,12 +8,12 @@ export interface BoundingBox extends Box {
   height: number;
 }
 
-export const createBoundingBox = (
-  offsetX: number,
-  offsetY: number,
-  width: number,
-  height: number,
-): BoundingBox => ({
+export const createBoundingBox = ({
+  offsetX = 0,
+  offsetY = 0,
+  width = 0,
+  height = 0,
+}): BoundingBox => ({
   name: 'BoundingBox',
   offsetX,
   offsetY,

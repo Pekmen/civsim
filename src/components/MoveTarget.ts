@@ -4,7 +4,7 @@ export interface MoveTarget {
   y: number;
 }
 
-export const createMoveTarget = (x = 0, y = 0): MoveTarget => ({
+export const createMoveTarget = ({ x = 0, y = 0 }): MoveTarget => ({
   name: 'MoveTarget',
   x,
   y,

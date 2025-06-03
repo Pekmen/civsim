@@ -1,10 +1,13 @@
 import type { Position } from '.';
 import type { Component } from '../core';
 
-export type RenderFunction = (
-  ctx: CanvasRenderingContext2D,
-  position: Position,
-) => void;
+export type RenderFunction = ({
+  context,
+  position,
+}: {
+  context: CanvasRenderingContext2D;
+  position: Position;
+}) => void;
 
 export interface Renderable extends Component {
   readonly name: 'Renderable';

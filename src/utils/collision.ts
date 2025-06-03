@@ -72,5 +72,8 @@ export const getOutOfBoundsCorrection = (
     positionCorrectionY = bounds.top - aabb.top;
   }
 
-  return createCollisionCorrection(positionCorrectionX, positionCorrectionY);
+  return createCollisionCorrection({
+    positionCorrectionX,
+    positionCorrectionY,
+  });
 };

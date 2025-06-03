@@ -29,11 +29,11 @@ export const createWorker = ({
   behavior = 'wandering' as BehaviorType,
 }) => {
   return new Entity('Worker')
-    .add(createPosition(x, y))
-    .add(createVelocity(vx, vy))
+    .add(createPosition({ x, y }))
+    .add(createVelocity({ vx, vy }))
     .add(createSpeed(speed))
-    .add(createBoundingBox(-3, -6, 6, 12))
-    .add(createCollisionBox(-3, -6, 6, 12))
+    .add(createBoundingBox({ offsetX: -3, offsetY: -6, width: 6, height: 12 }))
+    .add(createCollisionBox({ offsetX: -3, offsetY: -6, width: 6, height: 12 }))
     .add(createBehavior(behavior))
     .add(createRenderable(createWorkerRenderer()));
 };

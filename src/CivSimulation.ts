@@ -96,7 +96,7 @@ export class CivSimulation {
 
     for (let i = 0; i < this.initialHouses; i++) {
       const randomPos = randomPositionInBounds(0, 0, width, height);
-      this.entityManager.add(createHouse(randomPos.x, randomPos.y));
+      this.entityManager.add(createHouse({ x: randomPos.x, y: randomPos.y }));
     }
 
     this.systemManager.register(this.behaviorSystem);
@@ -105,9 +105,9 @@ export class CivSimulation {
     this.systemManager.register(this.renderSystem);
   }
 
-  private update(delta: number): void {
+  private update(deltaTime: number): void {
     for (const system of this.systemManager.getAll()) {
-      system.update(this.entityManager, delta);
+      system.update({ entityManager: this.entityManager, deltaTime });
     }
   }
 

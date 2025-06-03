@@ -1,10 +1,16 @@
-import type { Position } from '../components';
+import type { Position, RenderFunction } from '../components';
 
-export const createWorkerRenderer = () => {
-  return (context: CanvasRenderingContext2D, pos: Position) => {
+export const createWorkerRenderer = (): RenderFunction => {
+  return ({
+    context,
+    position,
+  }: {
+    context: CanvasRenderingContext2D;
+    position: Position;
+  }) => {
     context.save();
 
-    context.translate(pos.x, pos.y);
+    context.translate(position.x, position.y);
 
     context.fillStyle = '#FFA652';
     context.fillRect(-3, -6, 6, 12);

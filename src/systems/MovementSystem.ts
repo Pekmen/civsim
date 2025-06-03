@@ -5,7 +5,7 @@ import type {
   MoveTarget,
   CollisionCorrection,
 } from '../components';
-import { System, EntityManager } from '../core';
+import { System, type SystemUpdateParams } from '../core';
 
 const TARGET_PROXIMITY_TRESHOLD = 10;
 
@@ -14,7 +14,7 @@ export class MovementSystem extends System {
     super('MovementSystem');
   }
 
-  update(entityManager: EntityManager, deltaTime: number): void {
+  update({ entityManager, deltaTime }: SystemUpdateParams): void {
     const entities = entityManager.query(['Position', 'Velocity', 'Speed']);
 
     for (const entity of entities) {
