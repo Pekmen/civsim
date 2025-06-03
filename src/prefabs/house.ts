@@ -21,7 +21,7 @@ export const createHouse = ({ x, y }: { x: number; y: number }): Entity => {
     .add(
       createCollisionBox({
         offsetX: -30,
-        offsetY: -10,
+        offsetY: 10,
         width: 60,
         height: 10,
       }),
