@@ -7,15 +7,15 @@ export class SystemManager {
     this.systems = [];
   }
 
-  register<T extends System>(system: T): void {
+  add<T extends System>(system: T): void {
     this.systems.push(system);
   }
 
-  unregister(name: SystemName): void {
+  remove(name: SystemName): void {
     this.systems.filter((s) => s.name !== name);
   }
 
-  isRegistered(systemName: SystemName): boolean {
+  has(systemName: SystemName): boolean {
     return this.systems.some((s) => s.name === systemName);
   }
 

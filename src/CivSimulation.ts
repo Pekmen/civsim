@@ -109,10 +109,10 @@ export class CivSimulation {
       this.entityManager.add(createHouse({ x: randomPos.x, y: randomPos.y }));
     }
 
-    this.systemManager.register(this.behaviorSystem);
-    this.systemManager.register(this.collisionSystem);
-    this.systemManager.register(this.movementSystem);
-    this.systemManager.register(this.renderSystem);
+    this.systemManager.add(this.behaviorSystem);
+    this.systemManager.add(this.collisionSystem);
+    this.systemManager.add(this.movementSystem);
+    this.systemManager.add(this.renderSystem);
   }
 
   private update(deltaTime: number): void {
