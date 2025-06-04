@@ -12,5 +12,6 @@ body {
 }
 
 #worldCanvas {
+  /* temporary border for development*/
   border: 1px solid black;
 }

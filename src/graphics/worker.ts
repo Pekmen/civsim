@@ -1,3 +1,4 @@
+import { colors } from '../colors';
 import type { Position, RenderFunction } from '../components';
 
 export const createWorkerRenderer = (): RenderFunction => {
@@ -12,7 +13,7 @@ export const createWorkerRenderer = (): RenderFunction => {
 
     context.translate(position.x, position.y);
 
-    context.fillStyle = '#FFA652';
+    context.fillStyle = colors.graphics.worker.body;
     context.fillRect(-3, -6, 6, 12);
 
     context.restore();

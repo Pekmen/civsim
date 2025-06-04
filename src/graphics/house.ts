@@ -1,3 +1,4 @@
+import { colors } from '../colors';
 import type { Position, RenderFunction } from '../components';
 
 export const createHouseRenderer = (): RenderFunction => {
@@ -12,7 +13,7 @@ export const createHouseRenderer = (): RenderFunction => {
 
     context.translate(position.x, position.y);
 
-    context.fillStyle = '#645452';
+    context.fillStyle = colors.graphics.house.walls;
     context.fillRect(-30, -20, 60, 40);
 
     context.restore();

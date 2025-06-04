@@ -1,3 +1,4 @@
+import { colors } from '../colors';
 import type {
   BoundingBox,
   CollisionBox,
@@ -66,7 +67,13 @@ export class RenderSystem extends System {
 
       if (pos && collisionBox) {
         const { left, top, width, height } = getAABB(pos, collisionBox);
-        this.renderBox({ x: left, y: top, width, height, color: 'green' });
+        this.renderBox({
+          x: left,
+          y: top,
+          width,
+          height,
+          color: colors.base.green,
+        });
       }
     }
   }
@@ -74,7 +81,7 @@ export class RenderSystem extends System {
   private renderBackground(): void {
     this.context.save();
 
-    this.context.fillStyle = 'lightgrey';
+    this.context.fillStyle = colors.base.lightGray;
     this.context.fillRect(
       0,
       0,
@@ -88,7 +95,7 @@ export class RenderSystem extends System {
   private renderPixel(pos: Position): void {
     this.context.save();
 
-    this.context.fillStyle = 'black';
+    this.context.fillStyle = colors.base.black;
     this.context.fillRect(pos.x, pos.y, 1, 1);
 
     this.context.restore();
@@ -98,12 +105,12 @@ export class RenderSystem extends System {
     this.context.save();
     const fps = Math.round(1000 / delta);
 
-    this.context.strokeStyle = 'black';
-    this.context.fillStyle = 'lightgrey';
+    this.context.strokeStyle = colors.base.black;
+    this.context.fillStyle = colors.base.lightGray;
     this.context.strokeRect(0, 0, 70, 50);
     this.context.fillRect(0, 0, 70, 50);
     this.context.font = '12px Arial';
-    this.context.fillStyle = 'black';
+    this.context.fillStyle = colors.base.black;
     this.context.fillText(`FPS: ${fps}`, 10, 30);
     this.context.restore();
   }
@@ -113,7 +120,7 @@ export class RenderSystem extends System {
     y = 0,
     width = 0,
     height = 0,
-    color = 'red',
+    color = colors.base.red,
   }: RenderBoxOptions): void {
     this.context.save();
     this.context.strokeStyle = color;
