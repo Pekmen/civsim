@@ -6,6 +6,7 @@ import {
   MovementSystem,
   RenderSystem,
 } from './systems';
+import { DebugSystem } from './systems/DebugSystem';
 import { createCanvasAABB, randomPositionInBounds } from './utils';
 
 const MAX_DELTA_TIME = 50;
@@ -34,14 +35,11 @@ export class CivSimulation {
   private renderSystem: RenderSystem;
   private movementSystem: MovementSystem;
   private collisionSystem: CollisionSystem;
+  private debugSystem: DebugSystem;
 
   constructor(
     canvas: HTMLCanvasElement,
-    {
-      showFPS = false,
-      initialWorkers = 5,
-      initialHouses = 5,
-    }: CivSimulationConfig = {},
+    { initialWorkers = 5, initialHouses = 5 }: CivSimulationConfig = {},
   ) {
     this.canvas = canvas;
     this.context = this.canvas.getContext('2d');
@@ -51,7 +49,6 @@ export class CivSimulation {
       );
     }
 
-    this.showFPS = showFPS;
     this.initialWorkers = initialWorkers;
     this.initialHouses = initialHouses;
 
@@ -66,7 +63,15 @@ export class CivSimulation {
     this.collisionSystem = new CollisionSystem(
       createCanvasAABB(this.canvas.width, this.canvas.height),
     );
-    this.renderSystem = new RenderSystem(this.context, this.showFPS);
+    this.renderSystem = new RenderSystem(this.context);
+    this.debugSystem = new DebugSystem(this.context, {
+      enabled: true,
+      showFPS: true,
+      showPosition: true,
+      showCollisionBox: true,
+      showTargetVector: true,
+      showVelocityVector: true,
+    });
 
     this.init();
   }
@@ -113,6 +118,7 @@ export class CivSimulation {
     this.systemManager.add(this.collisionSystem);
     this.systemManager.add(this.movementSystem);
     this.systemManager.add(this.renderSystem);
+    this.systemManager.add(this.debugSystem);
   }
 
   private update(deltaTime: number): void {

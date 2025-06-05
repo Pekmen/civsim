@@ -14,4 +14,10 @@ export const colors = {
       body: '#FFA652',
     },
   },
+  debug: {
+    collisionBox: '#00ff00',
+    boundingBox: '#0000ff',
+    position: '#ff0000',
+    velocity: '#ff0000',
+  },
 };

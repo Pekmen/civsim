@@ -1,32 +1,17 @@
 import { colors } from '../colors';
-import type {
-  BoundingBox,
-  CollisionBox,
-  Position,
-  Renderable,
-} from '../components';
+import type { BoundingBox, Position, Renderable } from '../components';
 import { Entity, System, type SystemUpdateParams } from '../core';
 import { getAABB } from '../utils';
 
-type RenderBoxOptions = {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  color?: string;
-};
-
 export class RenderSystem extends System {
   private context: CanvasRenderingContext2D;
-  private showFPS: boolean;
 
-  constructor(context: CanvasRenderingContext2D, showFPS: boolean) {
+  constructor(context: CanvasRenderingContext2D) {
     super('RenderSystem');
     this.context = context;
-    this.showFPS = showFPS;
   }
 
-  update({ entityManager, deltaTime }: SystemUpdateParams): void {
+  update({ entityManager }: SystemUpdateParams): void {
     const entities = entityManager.query(['Renderable']);
 
     const entitiesByRenderDepth = entities.sort((a, b) => {
@@ -46,34 +31,17 @@ export class RenderSystem extends System {
     this.clearCanvas();
     this.renderBackground();
     this.renderEntities(entitiesByRenderDepth);
-
-    if (this.showFPS) {
-      this.renderFPS(deltaTime);
-    }
   }
 
   renderEntities(entities: Entity[]): void {
     for (const entity of entities) {
       const pos = entity.get<Position>('Position');
       const renderable = entity.get<Renderable>('Renderable');
-      const collisionBox = entity.get<CollisionBox>('CollisionBox');
 
       if (!renderable) continue;
 
       if (pos) {
         renderable.render({ context: this.context, position: pos });
-        this.renderPixel(pos);
-      }
-
-      if (pos && collisionBox) {
-        const { left, top, width, height } = getAABB(pos, collisionBox);
-        this.renderBox({
-          x: left,
-          y: top,
-          width,
-          height,
-          color: colors.base.green,
-        });
       }
     }
   }
@@ -89,42 +57,6 @@ export class RenderSystem extends System {
       this.context.canvas.height,
     );
 
-    this.context.restore();
-  }
-
-  private renderPixel(pos: Position): void {
-    this.context.save();
-
-    this.context.fillStyle = colors.base.black;
-    this.context.fillRect(pos.x, pos.y, 1, 1);
-
-    this.context.restore();
-  }
-
-  private renderFPS(delta: number): void {
-    this.context.save();
-    const fps = Math.round(1000 / delta);
-
-    this.context.strokeStyle = colors.base.black;
-    this.context.fillStyle = colors.base.lightGray;
-    this.context.strokeRect(0, 0, 70, 50);
-    this.context.fillRect(0, 0, 70, 50);
-    this.context.font = '12px Arial';
-    this.context.fillStyle = colors.base.black;
-    this.context.fillText(`FPS: ${fps}`, 10, 30);
-    this.context.restore();
-  }
-
-  private renderBox({
-    x = 0,
-    y = 0,
-    width = 0,
-    height = 0,
-    color = colors.base.red,
-  }: RenderBoxOptions): void {
-    this.context.save();
-    this.context.strokeStyle = color;
-    this.context.strokeRect(x, y, width, height);
     this.context.restore();
   }
 
