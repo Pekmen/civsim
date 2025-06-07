@@ -1,4 +1,4 @@
-import type { ComponentName, Entity, EntityType } from '.';
+import type { ComponentType, Entity, EntityType } from '.';
 
 export class EntityManager {
   private entities: Entity[] = [];
@@ -21,9 +21,9 @@ export class EntityManager {
 
   // @TODO: Find a way to type query so it guaranties it will contain
   // entities with correct queried types or an empty list
-  query<T extends readonly ComponentName[]>(componentNames: T): Entity[] {
+  query<T extends readonly ComponentType[]>(componentTypes: T): Entity[] {
     return this.entities.filter((entity) =>
-      componentNames.every((name) => entity.has(name)),
+      componentTypes.every((type) => entity.has(type)),
     );
   }
 

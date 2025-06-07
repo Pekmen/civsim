@@ -1,4 +1,4 @@
-import type { System, SystemName } from '.';
+import type { System, SystemType } from '.';
 
 export class SystemManager {
   systems: System[];
@@ -11,12 +11,12 @@ export class SystemManager {
     this.systems.push(system);
   }
 
-  remove(name: SystemName): void {
-    this.systems.filter((s) => s.name !== name);
+  remove(type: SystemType): void {
+    this.systems.filter((s) => s.type !== type);
   }
 
-  has(systemName: SystemName): boolean {
-    return this.systems.some((s) => s.name === systemName);
+  has(systemType: SystemType): boolean {
+    return this.systems.some((s) => s.type === systemType);
   }
 
   getAll(): System[] {

@@ -1,5 +1,5 @@
 import { generateId } from '../utils';
-import type { Component, ComponentName } from '.';
+import type { Component, ComponentType } from '.';
 
 export type Entityid = string;
 export type EntityType = string;
@@ -7,7 +7,7 @@ export type EntityType = string;
 export class Entity {
   readonly id: Entityid;
   readonly type: EntityType;
-  private components: Map<ComponentName, Component> = new Map();
+  private components: Map<ComponentType, Component> = new Map();
 
   constructor(type: EntityType) {
     this.id = generateId();
@@ -15,21 +15,21 @@ export class Entity {
   }
 
   add<T extends Component>(component: T): this {
-    this.components.set(component.name, component);
+    this.components.set(component.type, component);
     return this;
   }
 
-  remove(name: ComponentName): this {
-    this.components.delete(name);
+  remove(type: ComponentType): this {
+    this.components.delete(type);
     return this;
   }
 
-  get<T extends Component>(name: ComponentName): T | undefined {
-    return this.components.get(name) as T | undefined;
+  get<T extends Component>(type: ComponentType): T | undefined {
+    return this.components.get(type) as T | undefined;
   }
 
-  has(name: ComponentName): boolean {
-    return this.components.has(name);
+  has(type: ComponentType): boolean {
+    return this.components.has(type);
   }
 
   getAll(): Component[] {

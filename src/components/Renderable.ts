@@ -10,11 +10,11 @@ export type RenderFunction = ({
 }) => void;
 
 export interface Renderable extends Component {
-  readonly name: 'Renderable';
+  readonly type: 'Renderable';
   render: RenderFunction;
 }
 
 export const createRenderable = (render: RenderFunction): Renderable => ({
-  name: 'Renderable',
+  type: 'Renderable',
   render,
 });

@@ -1,16 +1,16 @@
 import type { EntityManager } from '.';
 
-export type SystemName = string;
+export type SystemType = string;
 export type SystemUpdateParams = {
   entityManager: EntityManager;
   deltaTime: number;
 };
 
 export abstract class System {
-  readonly name: SystemName;
+  readonly type: SystemType;
 
-  constructor(name: SystemName) {
-    this.name = name;
+  constructor(type: SystemType) {
+    this.type = type;
   }
 
   abstract update({ entityManager, deltaTime }: SystemUpdateParams): void;

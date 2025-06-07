@@ -7,6 +7,9 @@ export const colors = {
     red: '#ff0000',
   },
   graphics: {
+    palace: {
+      walls: '#ffff00',
+    },
     house: {
       walls: '#645452',
     },

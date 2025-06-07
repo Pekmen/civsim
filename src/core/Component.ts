@@ -1,5 +1,5 @@
-export type ComponentName = string;
+export type ComponentType = string;
 
 export interface Component {
-  readonly name: ComponentName;
+  readonly type: ComponentType;
 }

@@ -1,7 +1,7 @@
 import type { Box } from '.';
 
 export interface BoundingBox extends Box {
-  readonly name: 'BoundingBox';
+  readonly type: 'BoundingBox';
   offsetX: number;
   offsetY: number;
   width: number;
@@ -14,7 +14,7 @@ export const createBoundingBox = ({
   width = 0,
   height = 0,
 }): BoundingBox => ({
-  name: 'BoundingBox',
+  type: 'BoundingBox',
   offsetX,
   offsetY,
   width,

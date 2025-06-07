@@ -1,7 +1,7 @@
 import type { Box } from '.';
 
 export interface CollisionBox extends Box {
-  readonly name: 'CollisionBox';
+  readonly type: 'CollisionBox';
   offsetX: number;
   offsetY: number;
   width: number;
@@ -14,7 +14,7 @@ export const createCollisionBox = ({
   width = 0,
   height = 0,
 }): CollisionBox => ({
-  name: 'CollisionBox',
+  type: 'CollisionBox',
   offsetX,
   offsetY,
   width,
