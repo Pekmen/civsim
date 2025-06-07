@@ -1,6 +1,6 @@
 import { EntityManager, SystemManager } from './core';
-import { createHouse, createWorker } from './prefabs';
-import { createPalace } from './prefabs/palace';
+import { createHouse, createPalace, createWorker } from './prefabs';
+import { createResourceDeposit } from './prefabs/resourceDeposit';
 import {
   BehaviorSystem,
   CollisionSystem,
@@ -105,6 +105,22 @@ export class CivSimulation {
         bottom: height,
       });
       this.entityManager.add(createHouse({ x: randomPos.x, y: randomPos.y }));
+    }
+
+    for (let i = 0; i < 1; i++) {
+      const randomPos = randomPositionInBounds({
+        left: 0,
+        top: 0,
+        right: width,
+        bottom: height,
+      });
+      this.entityManager.add(
+        createResourceDeposit({
+          type: 'food',
+          x: randomPos.x,
+          y: randomPos.y,
+        }),
+      );
     }
 
     this.entityManager.add(createPalace({ x: 200, y: 200 }));

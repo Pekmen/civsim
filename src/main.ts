@@ -8,7 +8,7 @@ if (canvas) {
   canvas.width = 800;
   canvas.height = 600;
   const simulation = new CivSimulation(canvas, {
-    initialWorkers: 10,
+    initialWorkers: 1,
     initialHouses: 0,
     debugConfig: {
       enabled: true,

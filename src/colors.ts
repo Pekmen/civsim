@@ -16,6 +16,9 @@ export const colors = {
     worker: {
       body: '#FFA652',
     },
+    resource: {
+      food: '#ff0000',
+    },
   },
   debug: {
     collisionBox: '#00ff00',

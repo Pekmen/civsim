@@ -6,5 +6,6 @@ export * from './CollisionCorrection';
 export * from './MoveTarget';
 export * from './Position';
 export * from './Renderable';
+export * from './Resource';
 export * from './Speed';
 export * from './Velocity';

@@ -11,15 +11,6 @@ import {
 import { Entity } from '../core';
 import { createWorkerRenderer } from '../graphics';
 
-export interface createWorkerOptions {
-  x: number;
-  y: number;
-  vx?: number;
-  vy?: number;
-  speed?: number;
-  behavior?: BehaviorType;
-}
-
 export const createWorker = ({
   x = 0,
   y = 0,
