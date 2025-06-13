@@ -1,6 +1,12 @@
 import type { Component } from '../core';
 
-export type BehaviorType = 'idle' | 'wandering' | 'testing';
+export type BehaviorType =
+  | 'idle'
+  | 'wandering'
+  | 'testing'
+  | 'seeking_resource'
+  | 'deposit_resource'
+  | 'gathering';
 
 export interface Behavior extends Component {
   readonly type: 'Behavior';

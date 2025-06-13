@@ -1,7 +1,7 @@
 import { colors } from '../colors';
 import type { Position, RenderFunction } from '../components';
 
-export const createResourceDepositRenderer = (): RenderFunction => {
+export const createResourceNodeRenderer = (): RenderFunction => {
   return ({
     context,
     position,

@@ -4,6 +4,7 @@ import {
   createPosition,
   createRenderable,
 } from '../components';
+import { createResourceDeposit } from '../components/ResourceDeposit';
 import { Entity } from '../core';
 import { createPalaceRenderer } from '../graphics';
 
@@ -26,5 +27,6 @@ export const createPalace = ({ x, y }: { x: number; y: number }): Entity => {
         height: 10,
       }),
     )
-    .add(createRenderable(createPalaceRenderer()));
+    .add(createRenderable(createPalaceRenderer()))
+    .add(createResourceDeposit());
 };

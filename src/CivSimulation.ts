@@ -1,11 +1,12 @@
 import { EntityManager, SystemManager } from './core';
 import { createHouse, createPalace, createWorker } from './prefabs';
-import { createResourceDeposit } from './prefabs/resourceDeposit';
+import { createResourceNode } from './prefabs';
 import {
   BehaviorSystem,
   CollisionSystem,
   MovementSystem,
   RenderSystem,
+  ResourceGatheringSystem,
 } from './systems';
 import { type DebugConfig, DebugSystem } from './systems/DebugSystem';
 import { createCanvasAABB, randomPositionInBounds } from './utils';
@@ -36,6 +37,7 @@ export class CivSimulation {
   private renderSystem: RenderSystem;
   private movementSystem: MovementSystem;
   private collisionSystem: CollisionSystem;
+  private resourceGatheringSystem: ResourceGatheringSystem;
   private debugSystem: DebugSystem;
 
   constructor(
@@ -69,6 +71,7 @@ export class CivSimulation {
     this.collisionSystem = new CollisionSystem(
       createCanvasAABB(this.canvas.width, this.canvas.height),
     );
+    this.resourceGatheringSystem = new ResourceGatheringSystem();
     this.renderSystem = new RenderSystem(this.context);
     this.debugSystem = new DebugSystem(this.context, this.debugConfig);
 
@@ -115,8 +118,8 @@ export class CivSimulation {
         bottom: height,
       });
       this.entityManager.add(
-        createResourceDeposit({
-          type: 'food',
+        createResourceNode({
+          resourceType: 'food',
           x: randomPos.x,
           y: randomPos.y,
         }),
@@ -127,6 +130,7 @@ export class CivSimulation {
 
     this.systemManager.add(this.behaviorSystem);
     this.systemManager.add(this.collisionSystem);
+    this.systemManager.add(this.resourceGatheringSystem);
     this.systemManager.add(this.movementSystem);
     this.systemManager.add(this.renderSystem);
     this.systemManager.add(this.debugSystem);

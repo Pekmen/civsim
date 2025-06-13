@@ -7,25 +7,25 @@ import {
   type ResourceType,
 } from '../components';
 import { Entity } from '../core';
-import { createResourceDepositRenderer } from '../graphics';
+import { createResourceNodeRenderer } from '../graphics';
 
-interface CreateResourceDepositParams {
-  type: ResourceType;
+interface CreateResourceNodeParams {
+  resourceType: ResourceType;
   amount?: number;
   x: number;
   y: number;
 }
 
-export const createResourceDeposit = ({
-  type,
+export const createResourceNode = ({
+  resourceType,
   amount = 100,
   x = 0,
   y = 0,
-}: CreateResourceDepositParams): Entity => {
-  return new Entity('ResourceDeposit')
+}: CreateResourceNodeParams): Entity => {
+  return new Entity('ResourceNode')
     .add(createPosition({ x, y }))
     .add(createBoundingBox({ offsetX: -3, offsetY: -6, width: 6, height: 12 }))
     .add(createCollisionBox({ offsetX: -3, offsetY: -6, width: 6, height: 12 }))
-    .add(createResource({ type, amount }))
-    .add(createRenderable(createResourceDepositRenderer()));
+    .add(createResource({ resourceType, amount }))
+    .add(createRenderable(createResourceNodeRenderer()));
 };
