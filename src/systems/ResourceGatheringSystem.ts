@@ -1,9 +1,12 @@
 import type {
+  DepositTarget,
   GatherTarget,
   Position,
   Resource,
+  ResourceDeposit,
   ResourceGatherer,
   ResourceInventory,
+  ResourceType,
 } from '../components';
 import {
   Entity,
@@ -29,6 +32,7 @@ export class ResourceGatheringSystem extends System {
       const position = entity.get<Position>('Position');
       const inventory = entity.get<ResourceInventory>('ResourceInventory');
       const gatherTarget = entity.get<GatherTarget>('GatherTarget');
+      const depositTarget = entity.get<DepositTarget>('DepositTarget');
 
       if (!gatherer || !position || !inventory) continue;
 
@@ -36,6 +40,13 @@ export class ResourceGatheringSystem extends System {
         this.gatherResource({
           entity,
           gatherTarget,
+          entityManager,
+          deltaTime,
+        });
+      } else if (depositTarget) {
+        this.depositResource({
+          entity,
+          depositTarget,
           entityManager,
           deltaTime,
         });
@@ -110,6 +121,75 @@ export class ResourceGatheringSystem extends System {
         }
       } else {
         entity.remove('GatherTarget');
+      }
+    }
+  }
+
+  private depositResource({
+    entity,
+    depositTarget,
+    entityManager,
+    deltaTime,
+  }: {
+    entity: Entity;
+    depositTarget: DepositTarget;
+    entityManager: EntityManager;
+    deltaTime: number;
+  }): void {
+    const targetEntity = entityManager
+      .getAll()
+      .find((e) => e.id === depositTarget.targetEntityId);
+
+    if (!targetEntity) {
+      entity.remove('DepositTarget');
+      return;
+    }
+
+    const gathererPos = entity.get<Position>('Position');
+    const targetPos = targetEntity.get<Position>('Position');
+    const gatherer = entity.get<ResourceGatherer>('ResourceGatherer');
+    const inventory = entity.get<ResourceInventory>('ResourceInventory');
+    const deposit = targetEntity.get<ResourceDeposit>('ResourceDeposit');
+
+    if (!gathererPos || !targetPos || !gatherer || !inventory || !deposit) {
+      return;
+    }
+
+    const distance = Math.hypot(
+      targetPos.x - gathererPos.x,
+      targetPos.y - gathererPos.y,
+    );
+
+    if (distance <= gatherer.gatherRange) {
+      const resourceType = depositTarget.resourceType as ResourceType;
+      const availableAmount = inventory.resources.get(resourceType) ?? 0;
+
+      if (availableAmount <= 0) {
+        entity.remove('DepositTarget');
+        return;
+      }
+
+      const depositAmount = (gatherer.gatherRate * deltaTime) / 1000;
+      const actualDeposit = Math.min(depositAmount, availableAmount);
+
+      const totalStored = Array.from(deposit.stored.values()).reduce(
+        (sum, amount) => sum + amount,
+        0,
+      );
+      const spaceAvailable = deposit.capacity - totalStored;
+      const canDeposit = Math.min(actualDeposit, spaceAvailable);
+
+      if (canDeposit > 0) {
+        inventory.resources.set(resourceType, availableAmount - canDeposit);
+
+        const currentStored = deposit.stored.get(resourceType) ?? 0;
+        deposit.stored.set(resourceType, currentStored + canDeposit);
+
+        if (inventory.resources.get(resourceType) === 0) {
+          entity.remove('DepositTarget');
+        }
+      } else {
+        entity.remove('DepositTarget');
       }
     }
   }

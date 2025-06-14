@@ -5,7 +5,8 @@ export type BehaviorType =
   | 'wandering'
   | 'testing'
   | 'seeking_resource'
-  | 'deposit_resource'
+  | 'seeking_deposit'
+  | 'depositing'
   | 'gathering';
 
 export interface Behavior extends Component {

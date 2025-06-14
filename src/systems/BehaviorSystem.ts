@@ -1,17 +1,24 @@
 import {
   type Behavior,
   type BoundingBox,
+  createDepositTarget,
   createGatherTarget,
   createMoveTarget,
+  type DepositTarget,
   type GatherTarget,
   type MoveTarget,
   type Position,
   type Resource,
   type ResourceGatherer,
+  type ResourceInventory,
   type Speed,
 } from '../components';
 import { System, type SystemUpdateParams } from '../core';
-import { findNearestResource, randomPositionInBounds } from '../utils';
+import {
+  findNearestDeposit,
+  findNearestResource,
+  randomPositionInBounds,
+} from '../utils';
 
 export class BehaviorSystem extends System {
   private canvasWidth: number;
@@ -33,11 +40,14 @@ export class BehaviorSystem extends System {
       const moveTarget = entity.get<MoveTarget>('MoveTarget');
       const boundingBox = entity.get<BoundingBox>('BoundingBox');
       const gatherTarget = entity.get<GatherTarget>('GatherTarget');
+      const depositTarget = entity.get<DepositTarget>('DepositTarget');
+      const inventory = entity.get<ResourceInventory>('ResourceInventory');
 
       switch (behavior?.current) {
         case 'idle':
           entity.remove('MoveTarget');
           break;
+
         case 'wandering':
           if (!moveTarget && boundingBox && pos && speed) {
             const { width, height } = boundingBox;
@@ -50,6 +60,7 @@ export class BehaviorSystem extends System {
             entity.add(createMoveTarget({ x: randomPos.x, y: randomPos.y }));
           }
           break;
+
         case 'seeking_resource':
           if (!gatherTarget) {
             const nearestResource = findNearestResource({
@@ -72,9 +83,9 @@ export class BehaviorSystem extends System {
                 }
               }
             } else {
-              const behaviorComp = entity.get<Behavior>('Behavior');
-              if (behaviorComp) {
-                behaviorComp.current = 'wandering';
+              const behaviour = entity.get<Behavior>('Behavior');
+              if (behaviour) {
+                behaviour.current = 'wandering';
               }
             }
           } else {
@@ -96,9 +107,9 @@ export class BehaviorSystem extends System {
                     createMoveTarget({ x: targetPos.x, y: targetPos.y }),
                   );
                 } else {
-                  const behaviorComp = entity.get<Behavior>('Behavior');
-                  if (behaviorComp) {
-                    behaviorComp.current = 'gathering';
+                  const behaviour = entity.get<Behavior>('Behavior');
+                  if (behaviour) {
+                    behaviour.current = 'gathering';
                   }
                   entity.remove('MoveTarget');
                 }
@@ -113,16 +124,128 @@ export class BehaviorSystem extends System {
           entity.remove('MoveTarget');
 
           if (!gatherTarget) {
-            const behaviorComp = entity.get<Behavior>('Behavior');
-
-            if (behaviorComp) {
-              behaviorComp.current = 'wandering';
+            // Check if inventory has resources to deposit
+            if (inventory && this.hasResourcesToDeposit(inventory)) {
+              const behaviour = entity.get<Behavior>('Behavior');
+              if (behaviour) {
+                behaviour.current = 'seeking_deposit';
+              }
+            } else {
+              const behaviour = entity.get<Behavior>('Behavior');
+              if (behaviour) {
+                behaviour.current = 'wandering';
+              }
             }
           }
           break;
+
+        case 'seeking_deposit':
+          if (!depositTarget && inventory) {
+            // Find a resource type to deposit
+            const resourceToDeposit = this.getFirstAvailableResource(inventory);
+
+            if (resourceToDeposit) {
+              const nearestDeposit = findNearestDeposit({
+                entity,
+                entityManager,
+                resourceType: resourceToDeposit,
+              });
+
+              if (nearestDeposit && pos) {
+                entity.add(
+                  createDepositTarget(nearestDeposit.id, resourceToDeposit),
+                );
+
+                const depositPos = nearestDeposit.get<Position>('Position');
+                if (depositPos) {
+                  entity.add(
+                    createMoveTarget({ x: depositPos.x, y: depositPos.y }),
+                  );
+                }
+              } else {
+                const behaviour = entity.get<Behavior>('Behavior');
+                if (behaviour) {
+                  behaviour.current = 'wandering';
+                }
+              }
+            } else {
+              const behaviour = entity.get<Behavior>('Behavior');
+              if (behaviour) {
+                behaviour.current = 'wandering';
+              }
+            }
+          } else if (depositTarget) {
+            const targetEntity = entityManager
+              .getAll()
+              .find((e) => e.id === depositTarget.targetEntityId);
+
+            if (targetEntity) {
+              const targetPos = targetEntity.get<Position>('Position');
+              const gatherer = entity.get<ResourceGatherer>('ResourceGatherer');
+
+              if (targetPos && gatherer && pos) {
+                const distance = Math.hypot(
+                  targetPos.x - pos.x,
+                  targetPos.y - pos.y,
+                );
+
+                if (distance > gatherer.gatherRange) {
+                  entity.add(
+                    createMoveTarget({ x: targetPos.x, y: targetPos.y }),
+                  );
+                } else {
+                  const behaviour = entity.get<Behavior>('Behavior');
+                  if (behaviour) {
+                    behaviour.current = 'depositing';
+                  }
+                  entity.remove('MoveTarget');
+                }
+              }
+            } else {
+              entity.remove('DepositTarget');
+            }
+          }
+          break;
+
+        case 'depositing':
+          entity.remove('MoveTarget');
+
+          if (!depositTarget) {
+            // Check if we still have resources to deposit
+            if (inventory && this.hasResourcesToDeposit(inventory)) {
+              const behaviour = entity.get<Behavior>('Behavior');
+              if (behaviour) {
+                behaviour.current = 'seeking_deposit';
+              }
+            } else {
+              const behaviour = entity.get<Behavior>('Behavior');
+              if (behaviour) {
+                behaviour.current = 'seeking_resource';
+              }
+            }
+          }
+          break;
+
         default:
           break;
       }
     }
+  }
+
+  private hasResourcesToDeposit(inventory: ResourceInventory): boolean {
+    return Array.from(inventory.resources.values()).some(
+      (amount) => amount > 0,
+    );
+  }
+
+  private getFirstAvailableResource(
+    inventory: ResourceInventory,
+  ): string | null {
+    for (const [resourceType, amount] of inventory.resources.entries()) {
+      if (amount > 0) {
+        return resourceType;
+      }
+    }
+    return null;
   }
 }

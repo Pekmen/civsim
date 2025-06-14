@@ -1,16 +1,20 @@
 import type { Component } from '../core';
-import type { ResourceType } from './Resource';
 
 export interface ResourceDeposit extends Component {
   readonly type: 'ResourceDeposit';
-  resources: Map<ResourceType, number>;
+  acceptedResourceTypes: string[];
   capacity: number;
+  stored: Map<string, number>;
 }
 
-export const createResourceDeposit = (
-  capacity: number = 100,
-): ResourceDeposit => ({
-  type: 'ResourceDeposit',
-  resources: new Map(),
-  capacity,
-});
+export function createResourceDeposit(
+  acceptedResourceTypes: string[],
+  capacity: number = Infinity,
+): ResourceDeposit {
+  return {
+    type: 'ResourceDeposit',
+    acceptedResourceTypes,
+    capacity,
+    stored: new Map<string, number>(),
+  };
+}

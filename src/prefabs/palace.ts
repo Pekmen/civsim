@@ -28,5 +28,5 @@ export const createPalace = ({ x, y }: { x: number; y: number }): Entity => {
       }),
     )
     .add(createRenderable(createPalaceRenderer()))
-    .add(createResourceDeposit());
+    .add(createResourceDeposit(['food']));
 };
