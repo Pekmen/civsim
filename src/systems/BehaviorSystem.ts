@@ -124,7 +124,6 @@ export class BehaviorSystem extends System {
           entity.remove('MoveTarget');
 
           if (!gatherTarget) {
-            // Check if inventory has resources to deposit
             if (inventory && this.hasResourcesToDeposit(inventory)) {
               const behaviour = entity.get<Behavior>('Behavior');
               if (behaviour) {
@@ -141,7 +140,6 @@ export class BehaviorSystem extends System {
 
         case 'seeking_deposit':
           if (!depositTarget && inventory) {
-            // Find a resource type to deposit
             const resourceToDeposit = this.getFirstAvailableResource(inventory);
 
             if (resourceToDeposit) {
@@ -211,7 +209,6 @@ export class BehaviorSystem extends System {
           entity.remove('MoveTarget');
 
           if (!depositTarget) {
-            // Check if we still have resources to deposit
             if (inventory && this.hasResourcesToDeposit(inventory)) {
               const behaviour = entity.get<Behavior>('Behavior');
               if (behaviour) {
